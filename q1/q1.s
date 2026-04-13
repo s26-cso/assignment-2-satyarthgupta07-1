@@ -15,8 +15,8 @@ make_node:
 
     # initialize fields
     sw s0, 0(a0)       # node->val = val (sw because int is 32 bit)
-    sd zero, 8(a0)     # node->left = NULL (sd because pointer is 64 bit)
-    sd zero, 16(a0)    # node->right = NULL (sd because pointer is 64 bit)
+    sd x0, 8(a0)     # node->left = NULL (sd because pointer is 64 bit)
+    sd x0, 16(a0)    # node->right = NULL (sd because pointer is 64 bit)
 
     ld s0, 0(sp)
     ld ra, 8(sp)
@@ -155,4 +155,3 @@ getAtMost_done:
     ld ra, 24(sp)
     addi sp, sp, 32
     ret
-    
