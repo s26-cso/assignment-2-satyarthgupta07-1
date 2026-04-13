@@ -23,24 +23,24 @@ main:
 
     # s0 = n (number of elements = argc-1)
     addi s0, a0, -1
-    mv s1, a1               # s1 = argv (char**)
+    addi s1, a1 ,0               # s1 = argv (char**)
 
     # allocate memory for arr result and stack (n*8 bytes each for 64 bit)
     slli t0, s0, 3          # t0 = n*8
     
-    mv a0, t0
+    addi a0, t0 ,0
     call malloc
-    mv s2, a0               # s2 = int*arr
+    addi s2, a0 ,0               # s2 = int*arr
 
     slli t0, s0, 3
-    mv a0, t0
+    addi a0, t0 ,0
     call malloc
-    mv s3, a0               # s3 = int*result
+    addi s3, a0 ,0               # s3 = int*result
 
     slli t0, s0, 3
-    mv a0, t0
+    addi a0, t0 ,0
     call malloc
-    mv s4, a0               # s4 = int*stack
+    addi s4, a0 ,0               # s4 = int*stack
 
     # parse command line arguments into arr
     li s6, 1                # argv_index = 1
@@ -79,11 +79,11 @@ init_done:
     addi s7, s0, -1         # i = n - 1
 
 nge_loop:
-    bltz s7, nge_done       # if i < 0, break
+    blt s7,x0, nge_done       # if i < 0, break
 
 while_loop:
     # while (!stack.empty() && arr[stack.top()] <= arr[i])
-    beqz s5, while_done     # if stack empty, break while loop
+    beq s5,x0, while_done     # if stack empty, break while loop
     
     # get stack.top()
     addi t0, s5, -1         # top_index = stack_size - 1
