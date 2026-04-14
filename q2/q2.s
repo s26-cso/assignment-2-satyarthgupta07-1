@@ -134,7 +134,6 @@ skip_result:
 
 nge_done:
 
-    # --- Autograder-safe printing logic ---
     ble s0, x0, main_end    # Edge case: if array is empty (n <= 0), skip to end
 
     li s7, 0                # i = 0
@@ -154,7 +153,7 @@ print_loop:
     j print_loop
 
 print_last:
-    # Print the very last element with a newline instead of a space
+    # print the very last element with a newline instead of a space
     slli t0, s7, 3
     add t1, s3, t0
     ld a1, 0(t1)            # a1 = result[n-1]
