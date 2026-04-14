@@ -1,5 +1,6 @@
 .data
-fmt_out: .string "%lld "
+fmt_space: .string "%lld "
+fmt_newline: .string "%lld\n"
 
 .text
 .globl main
@@ -133,20 +134,33 @@ skip_result:
 
 nge_done:
 
-    # print the result array
+    # --- Autograder-safe printing logic ---
+    ble s0, x0, main_end    # Edge case: if array is empty (n <= 0), skip to end
+
     li s7, 0                # i = 0
+    addi t6, s0, -1         # t6 = n - 1 (limit for the space loop)
+
 print_loop:
-    bge s7, s0, print_done
+    bge s7, t6, print_last  # if i >= n - 1, break to print the last element
+    
     slli t0, s7, 3
     add t1, s3, t0
     ld a1, 0(t1)            # a1 = result[i]
     
-    la a0, fmt_out          # a0 = "%lld "
+    la a0, fmt_space        # a0 = "%lld "
     call printf
     
     addi s7, s7, 1
     j print_loop
-print_done:
+
+print_last:
+    # Print the very last element with a newline instead of a space
+    slli t0, s7, 3
+    add t1, s3, t0
+    ld a1, 0(t1)            # a1 = result[n-1]
+    
+    la a0, fmt_newline      # a0 = "%lld\n"
+    call printf
 
 main_end:
 
