@@ -9,8 +9,7 @@ int main(){
 
     int a, b;
     
-    while (1){
-        scanf("%s %d %d", op, &a, &b); 
+    while(scanf("%s %d %d", op, &a, &b) == 3){ // for eof handling , in previous code we will had to do ctrl c
         //  i am converting the  char op to "./lib<op>.so" string to feed to my handler h
         sprintf(lib, "./lib%s.so", op); 
          
