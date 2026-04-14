@@ -2,8 +2,6 @@
     filename:   .string "input.txt"
     mode:       .string "r"             # read mode string required for fopen
     fmt_out:    .string "%s\n"          # format string for printf
-    
-    # o(1) fixed buffer space
     buffer:     .space 1048576  
 
 .text
@@ -17,15 +15,15 @@ main:
     la a0, filename             # arg 1: filename
     la a1, mode                 # arg 2: "r" (read mode)
     call fopen
-    mv s0, a0                   # save file pointer in s0
+    addi s0, a0,0                   # save file pointer in s0
 
     la a0, buffer               # arg 1 pointer to destination buffer
     li a1, 1                    # arg 2 size of each element (1 byte)
     li a2, 1048576              # arg 3 maximum number of elements to read
-    mv a3, s0                   # arg 4 file pointer
+    addi a3, s0,0                   # arg 4 file pointer
     call fread
 
-    mv a0, s0                   # arg 1: file pointer
+    addi a0, s0,0                   # arg 1: file pointer
     call fclose
 
     la t0, buffer               # t0 = left pointer
@@ -34,7 +32,7 @@ main:
 find_end_loop:
     lbu t2, 0(t1)               # load character at right pointer
     
-    beqz t2, end_found          # break if null terminator
+    beq t2,x0, end_found          # break if null terminator
     li t6, 10
     beq t2, t6, end_found       # break if newline (\n)
     
@@ -61,7 +59,7 @@ chars_match:
     j check_loop
 
 end_check:
-    beqz t3, print_no           # if check bit is 0, jump to print "no"
+    beq t3,x0, print_no           # if check bit is 0, jump to print "no"
 
 print_yes:
     addi sp, sp, -16            
@@ -87,7 +85,7 @@ print_no:
 
 do_print:
     la a0, fmt_out              # arg 1 "%s\n"
-    mv a1, sp                   # arg 2 stack pointer
+    addi a1, sp,0                   # arg 2 stack pointer
     call printf                 # call printf
     
     addi sp, sp, 16             # clean up
